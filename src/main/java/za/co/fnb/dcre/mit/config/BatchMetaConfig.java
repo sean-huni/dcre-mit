@@ -1,4 +1,4 @@
-package za.co.fnb.dcre.mis.config;
+package za.co.fnb.dcre.mit.config;
 
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
@@ -19,6 +19,6 @@ public class BatchMetaConfig {
     @Bean
     @Order(-10) // before JobLauncherApplicationRunner
     public ApplicationRunner staleExecutionSweep(final DataSource dataSource) {
-        return args -> StaleExecutionSweeper.abandonStale(dataSource, "MIS_BATCH_", 60);
+        return args -> StaleExecutionSweeper.abandonStale(dataSource, "MIT_BATCH_", 60);
     }
 }

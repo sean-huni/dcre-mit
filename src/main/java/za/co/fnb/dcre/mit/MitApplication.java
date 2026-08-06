@@ -1,4 +1,4 @@
-package za.co.fnb.dcre.mis;
+package za.co.fnb.dcre.mit;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
@@ -9,9 +9,9 @@ import za.co.fnb.dcre.platform.persistence.JdbcConfig;
 
 @SpringBootApplication
 @Import({JdbcConfig.class, BatchJdbcConfig.class, HeartbeatDatasourceConfig.class})
-public class MisApplication {
+public class MitApplication {
 
     public static void main(final String[] args) {
-        ExitCodeMain.run(MisApplication.class, args);
+        ExitCodeMain.run(MitApplication.class, args);
     }
 }

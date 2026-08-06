@@ -1,7 +1,7 @@
-package za.co.fnb.dcre.mis.data.repo;
+package za.co.fnb.dcre.mit.data.repo;
 
 import org.springframework.jdbc.core.RowMapper;
-import za.co.fnb.dcre.mis.data.model.ManInitRef;
+import za.co.fnb.dcre.mit.data.model.ManInitRef;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

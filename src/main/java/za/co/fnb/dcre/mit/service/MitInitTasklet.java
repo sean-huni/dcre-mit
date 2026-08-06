@@ -1,4 +1,4 @@
-package za.co.fnb.dcre.mis.service;
+package za.co.fnb.dcre.mit.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,19 +7,19 @@ import org.springframework.batch.core.step.StepContribution;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.infrastructure.repeat.RepeatStatus;
 import org.springframework.stereotype.Component;
-import za.co.fnb.dcre.mis.service.MisInitService.InitCounts;
+import za.co.fnb.dcre.mit.service.MitInitService.InitCounts;
 
 import java.util.UUID;
 
 /** Thin entry adapter (3-tier, configuration.md point 21). */
 @Component
-public class MisInitTasklet implements Tasklet {
+public class MitInitTasklet implements Tasklet {
 
-    private static final Logger log = LoggerFactory.getLogger(MisInitTasklet.class);
+    private static final Logger log = LoggerFactory.getLogger(MitInitTasklet.class);
 
-    private final MisInitService service;
+    private final MitInitService service;
 
-    public MisInitTasklet(final MisInitService service) {
+    public MitInitTasklet(final MitInitService service) {
         this.service = service;
     }
 

@@ -1,15 +1,15 @@
-package za.co.fnb.dcre.mis.data.repo;
+package za.co.fnb.dcre.mit.data.repo;
 
 import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.Repository;
 import org.springframework.data.repository.query.Param;
-import za.co.fnb.dcre.mis.data.model.AccountEntity;
+import za.co.fnb.dcre.mit.data.model.AccountEntity;
 
 import java.util.UUID;
 
 /**
- * MIS writer over the shared dcre_man account master (single writer for the
+ * MIT writer over the shared dcre_man account master (single writer for the
  * creditor accounts it mints, R-04; MSR/CTV read only). Extends Repository, not
  * CrudRepository: the derived save() path cannot satisfy the table's NOT NULL
  * contract from the minimal AccountEntity, so only this targeted query is exposed.
