@@ -18,7 +18,7 @@ import java.util.UUID;
  *   <li>never-clobbering: REJECTED/SCORE_DECLINED are outside the guard (MIT never
  *       initialises them), and a downstream SUBMITTED is never an eligible prior
  *       state, so MIT cannot overwrite it,</li>
- *   <li>MAF-safe: a still-unscored VALIDATED CREATE row is excluded (only
+ *   <li>MAS-safe: a still-unscored VALIDATED CREATE row is excluded (only
  *       AMEND/CANCEL advance from VALIDATED).</li>
  * </ul>
  * Native @Query per the guarded-mutation canon (QueryDSL cannot express these).

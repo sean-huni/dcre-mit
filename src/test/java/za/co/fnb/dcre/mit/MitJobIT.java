@@ -157,7 +157,7 @@ class MitJobIT {
         assertTrue(accountExists("6200000040"));
         assertEquals(accountsBefore + 1, accountCount());
         assertEquals(List.of("INITIALIZED", "INITIALIZED"), spineStates(arrival),
-                "AMEND/CANCEL advance to INITIALIZED from VALIDATED (they skip MAF)");
+                "AMEND/CANCEL advance to INITIALIZED from VALIDATED (they skip MAS)");
     }
 
     @Test
@@ -167,7 +167,7 @@ class MitJobIT {
         ManTestTables.insertEntry(jdbc, arrival, 2, "CREATE", "MREF-F", "6200000052", "SCORE_DECLINED");
         ManTestTables.insertEntry(jdbc, arrival, 3, "CREATE", "MREF-G", "6200000053", "SCORE_PENDING");
         ManTestTables.insertEntry(jdbc, arrival, 4, "CREATE", "MREF-H", "6200000054", "RECEIVED");
-        ManTestTables.insertEntry(jdbc, arrival, 5, "CREATE", "MREF-I", "6200000055", "VALIDATED"); // CREATE awaiting MAF
+        ManTestTables.insertEntry(jdbc, arrival, 5, "CREATE", "MREF-I", "6200000055", "VALIDATED"); // CREATE awaiting MAS
         final int accountsBefore = accountCount();
 
         final JobExecution run = run(arrival, null);
