@@ -13,14 +13,14 @@ import java.util.UUID;
  * Read side of the MRR-owned mandate_request_entry spine (MIT never inserts rows).
  * The verdict scope is the set of rows MIT is responsible for initialising:
  * <ul>
- *   <li>{@code SCORE_PASSED} - CREATE rows that cleared the MAF score gate,</li>
- *   <li>{@code VALIDATED} AMEND/CANCEL rows - these skip MAF and stay VALIDATED,</li>
+ *   <li>{@code SCORE_PASSED} - CREATE rows that cleared the MAS score gate,</li>
+ *   <li>{@code VALIDATED} AMEND/CANCEL rows - these skip MAS and stay VALIDATED,</li>
  *   <li>{@code INITIALIZED} - rows MIT already processed, re-read so a resume
  *       re-exercises the idempotent verdict/account writes on the SAME identity.</li>
  * </ul>
  * REJECTED / SCORE_DECLINED / SCORE_PENDING / RECEIVED / VALIDATED-CREATE / SUBMITTED
  * are all excluded, so MIT NEVER initialises a rejected or score-declined row and
- * never races MAF for a still-unscored CREATE. All spine_state WRITES go through
+ * never races MAS for a still-unscored CREATE. All spine_state WRITES go through
  * {@link ManInitTransitionRepo} (single-column single-writer, R-04).
  */
 public interface ManRequestEntryRepo extends Repository<ManRequestEntryView, UUID> {

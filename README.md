@@ -1,19 +1,19 @@
 # dcre-mit
 
-Mandates Init Service: the fifth stage of the M10 mandates flow (SCRUM-77) that initializes the mandate spine written by MRR and advanced by MRV/MAF. For every eligible instruction row it mints the creditor account in the shared `dcre_man` account master if absent, records a durable per-record init verdict in `man_init_verdict`, and transitions the row's `spine_state` to `INITIALIZED` in `dcre_man`.
+Mandates Init Service: the fifth stage of the M10 mandates flow (SCRUM-77) that initializes the mandate spine written by MRR and advanced by MRV/MAS. For every eligible instruction row it mints the creditor account in the shared `dcre_man` account master if absent, records a durable per-record init verdict in `man_init_verdict`, and transitions the row's `spine_state` to `INITIALIZED` in `dcre_man`.
 
 ## What it does
 
-MIT is the DAG successor of MAF (`MRR -> MRV -> MAF -> MIT -> { MIR || MRW }`). AGT launches it as a short-lived Kubernetes Job with `arrival.id` as the identifying JobParameter (R-16). It owns the `spine_state -> INITIALIZED` transition (ruling note 2: MRR writes spine ROWS, MRV/MAF/MIT each advance the state columns they own; MSR is the sole writer of the mandate PROJECTION FSM, so MIT writes no projection row).
+MIT is the DAG successor of MAS (`MRR -> MRV -> MAS -> MIT -> { MIR || MRW }`). AGT launches it as a short-lived Kubernetes Job with `arrival.id` as the identifying JobParameter (R-16). It owns the `spine_state -> INITIALIZED` transition (ruling note 2: MRR writes spine ROWS, MRV/MAS/MIT each advance the state columns they own; MSR is the sole writer of the mandate PROJECTION FSM, so MIT writes no projection row).
 
 ### Eligibility (never process a rejected or unscored row)
 
 MIT initializes exactly:
 
-- `SCORE_PASSED` rows: CREATE instructions that cleared the MAF affordability gate;
-- `VALIDATED` AMEND/CANCEL rows: these skip MAF (CREATE-only score gate) and stay VALIDATED.
+- `SCORE_PASSED` rows: CREATE instructions that cleared the MAS affordability gate;
+- `VALIDATED` AMEND/CANCEL rows: these skip MAS (CREATE-only score gate) and stay VALIDATED.
 
-`REJECTED`, `SCORE_DECLINED`, `SCORE_PENDING`, `RECEIVED`, a still-unscored `VALIDATED` CREATE row, and a downstream `SUBMITTED` row are all outside scope: MIT never initializes a rejected or score-declined mandate, and never races MAF for an unscored CREATE.
+`REJECTED`, `SCORE_DECLINED`, `SCORE_PENDING`, `RECEIVED`, a still-unscored `VALIDATED` CREATE row, and a downstream `SUBMITTED` row are all outside scope: MIT never initializes a rejected or score-declined mandate, and never races MAS for an unscored CREATE.
 
 ### Account create-if-absent + immutable verdict (AIS pattern)
 

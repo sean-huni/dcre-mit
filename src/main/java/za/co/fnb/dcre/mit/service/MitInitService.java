@@ -11,8 +11,8 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * Business tier: post-MAF mandate initialization for the M10 mandates flow
- * (MRR -> MRV -> MAF -> MIT -> { MIR || MRW }, SCRUM-77; DB-only, R-30). For
+ * Business tier: post-MAS mandate initialization for the M10 mandates flow
+ * (MRR -> MRV -> MAS -> MIT -> { MIR || MRW }, SCRUM-77; DB-only, R-30). For
  * every eligible spine row of the arrival (SCORE_PASSED CREATE, or VALIDATED
  * AMEND/CANCEL): the creditor account is minted create-if-absent (typed), an
  * immutable man_init_verdict is written (EXISTS when the account already
