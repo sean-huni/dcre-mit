@@ -1,4 +1,4 @@
-package za.co.fnb.dcre.mis;
+package za.co.fnb.dcre.mit;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -6,10 +6,10 @@ import java.util.UUID;
 
 /**
  * IT seeding helpers. account / account_type / mandate / man_init_verdict come
- * from MIS's own Liquibase (000-man-core-bootstrap.xml + 001-man-init-verdict.xml),
+ * from MIT's own Liquibase (000-man-core-bootstrap.xml + 001-man-init-verdict.xml),
  * so this helper only stands up the MRR-owned spine table
- * (mandate_request_entry, NOT in MIS's changelog, exactly as CtvTestTables stands
- * up the crr-owned tx spine) with the subset of columns the MIS reads, and seeds
+ * (mandate_request_entry, NOT in MIT's changelog, exactly as CtvTestTables stands
+ * up the crr-owned tx spine) with the subset of columns the MIT reads, and seeds
  * account + spine rows at a chosen spine_state.
  */
 public final class ManTestTables {
@@ -35,7 +35,7 @@ public final class ManTestTables {
                     UNIQUE (arrival_id, sequence))""");
     }
 
-    /** One spine row at a chosen spine_state, with a creditor account for MIS to init. */
+    /** One spine row at a chosen spine_state, with a creditor account for MIT to init. */
     public static void insertEntry(final JdbcTemplate jdbc, final UUID arrival, final int sequence,
                                    final String action, final String ref, final String creditorAccount,
                                    final String spineState) {

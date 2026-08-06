@@ -5,18 +5,18 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
-    <!-- man_init_verdict: MIS single writer (R-04, AIS ais_verdict pattern). One
+    <!-- man_init_verdict: MIT single writer (R-04, AIS ais_verdict pattern). One
          durable init verdict row per instruction record keyed on the FULL business
          identity (arrival_id, sequence): the UNIQUE lets the guarded INSERT ... ON
          CONFLICT DO NOTHING make a resume a zero-duplicate no-op and keeps the verdict
          immutable (never UPSERT on the PK; CRDB resolves UPSERT on PK only,
          persistence.md). action is EXISTS or CREATED (R-21: code values, never enum
          ordinals), derived from whether the idempotent creditor-account mint actually
-         inserted. MIS reads the mrr-owned spine (mandate_request_entry) and mints into
+         inserted. MIT reads the mrr-owned spine (mandate_request_entry) and mints into
          the shared dcre_man account master (000-man-core-bootstrap.xml); it OWNS this
          table and the spine_state -> INITIALIZED transition (ruling note 2). No
          projection writes: MSR is the sole writer of the mandate FSM. -->
-    <changeSet id="mis-001-man-init-verdict" author="dcre">
+    <changeSet id="mit-001-man-init-verdict" author="dcre">
         <preConditions onFail="MARK_RAN">
             <not><tableExists tableName="man_init_verdict"/></not>
         </preConditions>

@@ -1,18 +1,18 @@
-package za.co.fnb.dcre.mis.service;
+package za.co.fnb.dcre.mit.service;
 
 import org.springframework.stereotype.Service;
-import za.co.fnb.dcre.mis.data.model.ManInitRef;
-import za.co.fnb.dcre.mis.data.repo.AccountRepo;
-import za.co.fnb.dcre.mis.data.repo.ManInitTransitionRepo;
-import za.co.fnb.dcre.mis.data.repo.ManInitVerdictRepo;
-import za.co.fnb.dcre.mis.data.repo.ManRequestEntryRepo;
+import za.co.fnb.dcre.mit.data.model.ManInitRef;
+import za.co.fnb.dcre.mit.data.repo.AccountRepo;
+import za.co.fnb.dcre.mit.data.repo.ManInitTransitionRepo;
+import za.co.fnb.dcre.mit.data.repo.ManInitVerdictRepo;
+import za.co.fnb.dcre.mit.data.repo.ManRequestEntryRepo;
 
 import java.util.List;
 import java.util.UUID;
 
 /**
  * Business tier: post-MAF mandate initialization for the M10 mandates flow
- * (MRR -> MRV -> MAF -> MIS -> { MIR || MRW }, SCRUM-77; DB-only, R-30). For
+ * (MRR -> MRV -> MAF -> MIT -> { MIR || MRW }, SCRUM-77; DB-only, R-30). For
  * every eligible spine row of the arrival (SCORE_PASSED CREATE, or VALIDATED
  * AMEND/CANCEL): the creditor account is minted create-if-absent (typed), an
  * immutable man_init_verdict is written (EXISTS when the account already
@@ -29,7 +29,7 @@ import java.util.UUID;
  * shared CRDB 40001 retry (a contended abort re-runs the tasklet in a fresh tx).
  */
 @Service
-public class MisInitService {
+public class MitInitService {
 
     /** Per-run tallies; existing + created = eligible instruction rows initialised. */
     public record InitCounts(int existing, int created) {
@@ -40,7 +40,7 @@ public class MisInitService {
     private final ManInitVerdictRepo verdicts;
     private final ManInitTransitionRepo spine;
 
-    public MisInitService(final ManRequestEntryRepo entries, final AccountRepo accounts,
+    public MitInitService(final ManRequestEntryRepo entries, final AccountRepo accounts,
                           final ManInitVerdictRepo verdicts, final ManInitTransitionRepo spine) {
         this.entries = entries;
         this.accounts = accounts;

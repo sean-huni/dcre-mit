@@ -1,10 +1,10 @@
-package za.co.fnb.dcre.mis.data.repo;
+package za.co.fnb.dcre.mit.data.repo;
 
 import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
-import za.co.fnb.dcre.mis.data.model.ManInitVerdictEntity;
+import za.co.fnb.dcre.mit.data.model.ManInitVerdictEntity;
 
 import java.util.UUID;
 

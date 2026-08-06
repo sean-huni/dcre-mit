@@ -1,4 +1,4 @@
-package za.co.fnb.dcre.mis;
+package za.co.fnb.dcre.mit;
 
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * MIS job over the real chain + CockroachDB (Testcontainers, fleet pattern). MIS
+ * MIT job over the real chain + CockroachDB (Testcontainers, fleet pattern). MIT
  * initializes the mandate spine for every eligible instruction row: creditor
  * account create-if-absent (typed), an immutable man_init_verdict (EXISTS vs
  * CREATED derived from whether the mint inserted), and the guarded spine_state
@@ -41,7 +41,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * the same verdicts with no CREATED->EXISTS flip and no duplicate accounts).
  */
 @SpringBootTest(properties = {"spring.batch.job.enabled=false"})
-class MisJobIT {
+class MitJobIT {
 
     static final CockroachContainer CRDB =
             new CockroachContainer(DockerImageName.parse("cockroachdb/cockroach:v26.2.3"));
@@ -54,7 +54,7 @@ class MisJobIT {
 
     static Path freshExchangeRoot() {
         try {
-            return Files.createTempDirectory("mis-seam-it");
+            return Files.createTempDirectory("mit-seam-it");
         } catch (final IOException e) {
             throw new UncheckedIOException(e);
         }
@@ -137,7 +137,7 @@ class MisJobIT {
         assertEquals(List.of("INITIALIZED", "INITIALIZED"), spineStates(arrival));
 
         Assumptions.assumeTrue(System.getenv("JOB_NAME") == null, "seam name requires JOB_NAME absent");
-        final Path seam = EXCHANGE.resolve("outcomes").resolve("local-mis-" + run.getId());
+        final Path seam = EXCHANGE.resolve("outcomes").resolve("local-mit-" + run.getId());
         assertTrue(Files.exists(seam), "expected self-describing seam file at " + seam);
         assertEquals(List.of("BUSINESS_ACCEPTED"), Files.readAllLines(seam));
     }
@@ -175,7 +175,7 @@ class MisJobIT {
 
         assertEquals(0, jdbc.queryForObject(
                 "SELECT count(*) FROM man_init_verdict WHERE arrival_id=?", Integer.class, arrival),
-                "MIS never writes a verdict for an ineligible row");
+                "MIT never writes a verdict for an ineligible row");
         for (int seq = 1; seq <= 5; seq++) {
             assertNull(jdbc.queryForObject("SELECT max(action) FROM man_init_verdict"
                     + " WHERE arrival_id=? AND sequence=?", String.class, arrival, seq));
