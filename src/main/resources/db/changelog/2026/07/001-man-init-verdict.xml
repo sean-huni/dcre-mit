@@ -5,7 +5,28 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
-    <!-- man_init_verdict: MIT single writer (R-04, AIS ais_verdict pattern). One
+    <!-- ===================================================================================
+         V1 BASELINE (SCRUM-107, owner directive 2026-08-08). THIS FILE MINTS
+         man_init_verdict FOR THE FIRST AND ONLY TIME.
+
+         Every DCRE database is dropped and recreated for the direct cut-over, so there is
+         no historic dcre_man, no deployed man_init_verdict and nothing to converge on.
+         The retrofit apparatus a migration needs is therefore ABSENT BY DESIGN here and
+         must not be re-added:
+
+           - no <validCheckSum>ANY</validCheckSum>: no checksum was ever recorded;
+           - no defensive IF NOT EXISTS on the CREATE: nothing exists;
+           - no onFail="MARK_RAN" precondition. Unlike the shared reference core in
+             000-man-core-bootstrap.xml, man_init_verdict has EXACTLY ONE creator: this
+             changelog. The infra bootstrap (dcre-infra scripts/seed-man-core.sql) does
+             not create it and no sibling M-service's changelog creates it, so on a
+             brand-new dcre_man the table cannot already exist and a convergence guard
+             would only be able to mask a real failure;
+           - no additive addColumn/dropNotNullConstraint retrofit: the final shape is the
+             createTable below.
+         =================================================================================== -->
+
+    <!-- man_init_verdict: MIT single writer (R-04, PAI pai_verdict pattern). One
          durable init verdict row per instruction record keyed on the FULL business
          identity (arrival_id, sequence): the UNIQUE lets the guarded INSERT ... ON
          CONFLICT DO NOTHING make a resume a zero-duplicate no-op and keeps the verdict
@@ -17,9 +38,6 @@
          table and the spine_state -> INITIALIZED transition (ruling note 2). No
          projection writes: MSR is the sole writer of the mandate FSM. -->
     <changeSet id="mit-001-man-init-verdict" author="dcre">
-        <preConditions onFail="MARK_RAN">
-            <not><tableExists tableName="man_init_verdict"/></not>
-        </preConditions>
         <createTable tableName="man_init_verdict">
             <column name="id" type="UUID" defaultValueComputed="gen_random_uuid()">
                 <constraints primaryKey="true" nullable="false"/>

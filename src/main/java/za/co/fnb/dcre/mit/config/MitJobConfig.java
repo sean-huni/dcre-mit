@@ -15,20 +15,20 @@ import za.co.fnb.dcre.platform.batch.HeartbeatWriter;
 import za.co.fnb.dcre.platform.batch.OutcomeSeamListener;
 
 /**
- * MIT job shape (single-step, AIS skeleton clone): initStep initializes the
+ * MIT job shape (single-step, PAI skeleton clone): initStep initializes the
  * mandate spine for every eligible instruction row of the arrival: creditor
  * account create-if-absent (typed), an immutable man_init_verdict
  * (EXISTS|CREATED) keyed on the full identity (arrival_id, sequence), and the
  * guarded spine_state transition to INITIALIZED (ruling note 2: MIT owns the
  * INITIALIZED state column, MSR owns the projection FSM). Identifying
  * JobParameter: arrival.id (R-16). Runs on the default SERIALIZABLE isolation
- * (only PRG carries READ COMMITTED, SCRUM-90).
+ * (only CRG carries READ COMMITTED, SCRUM-90).
  *
  * <p>MIT is DB-only for BUSINESS file I/O (R-30), but the outcome seam is AGT
  * orchestration plumbing: without it the OutcomeWatcher/Reconciler can never
  * observe a business verdict and reaps the stage as TECH_FAILED. MIT has no
  * business rejection of its own (REJECTED/SCORE_DECLINED rows are never in
- * scope), so the seam verdict is the constant BUSINESS_ACCEPTED, as with AIS.
+ * scope), so the seam verdict is the constant BUSINESS_ACCEPTED, as with PAI.
  */
 @Configuration
 public class MitJobConfig {
