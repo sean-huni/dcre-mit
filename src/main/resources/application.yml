@@ -20,4 +20,4 @@ dcre:
   agtops-db-user: ${DCRE_AGTOPS_DB_USER:root}
   agtops-db-password: ${DCRE_AGTOPS_DB_PASSWORD:}
   # Used only for the AGT outcome seam write (R-35); MIT does no boundary-file I/O (R-30).
-  exchange-root: ${DCRE_EXCHANGE_ROOT:../../../../../infra/dcre-infra/exchange}
+  exchange-root: ${DCRE_EXCHANGE_ROOT:../../../../../../infra/dcre-infra/exchange}

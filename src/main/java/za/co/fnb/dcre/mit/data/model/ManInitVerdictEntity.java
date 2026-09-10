@@ -6,7 +6,7 @@ import za.co.fnb.dcre.platform.persistence.BaseEntity;
 import java.util.UUID;
 
 /**
- * Per-instruction mandate-init verdict (AIS ais_verdict pattern); action is
+ * Per-instruction mandate-init verdict (PAI pai_verdict pattern); action is
  * EXISTS or CREATED. Written only through
  * {@link za.co.fnb.dcre.mit.data.repo.ManInitVerdictRepo#insertIfAbsent}
  * (guarded INSERT ... ON CONFLICT DO NOTHING), immutable once written so a

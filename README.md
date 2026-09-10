@@ -15,7 +15,7 @@ MIT initializes exactly:
 
 `REJECTED`, `SCORE_DECLINED`, `SCORE_PENDING`, `RECEIVED`, a still-unscored `VALIDATED` CREATE row, and a downstream `SUBMITTED` row are all outside scope: MIT never initializes a rejected or score-declined mandate, and never races MAS for an unscored CREATE.
 
-### Account create-if-absent + immutable verdict (AIS pattern)
+### Account create-if-absent + immutable verdict (PAI pattern)
 
 For each eligible row MIT mints the creditor account into the shared `dcre_man` `account` master with an idempotent `INSERT ... ON CONFLICT (account_number) DO NOTHING` (typed: synthetic `CHQ` / `ACTIVE`, per the account-master shape; canonical type roster + consolidation ride M11, ruling note 1 / A-62). The affected-row count is read directly to derive the verdict, so the decision is atomic with the write, never a racy check-then-act:
 
@@ -36,7 +36,7 @@ The verdict lands in `man_init_verdict` through `INSERT ... ON CONFLICT (arrival
 
 ## Architecture
 
-Ephemeral Spring Boot 4.1.0 / Spring Batch 6 / Java 25 batch job cloned from the AIS/MRV skeleton: `ExitCodeMain` wires the Batch outcome into the JVM exit code (R-34), CockroachDB via the PostgreSQL driver, platform-batch persistent JobRepository (`@Import BatchJdbcConfig`, `MIT_BATCH_` prefix), layer-first packages (`config/`, `service/`, `data/model/`, `data/repo/`), constructor injection, `.yml`-only config on the default SERIALIZABLE isolation (only PRG carries READ COMMITTED, SCRUM-90).
+Ephemeral Spring Boot 4.1.0 / Spring Batch 6 / Java 25 batch job cloned from the PAI/MRV skeleton: `ExitCodeMain` wires the Batch outcome into the JVM exit code (R-34), CockroachDB via the PostgreSQL driver, platform-batch persistent JobRepository (`@Import BatchJdbcConfig`, `MIT_BATCH_` prefix), layer-first packages (`config/`, `service/`, `data/model/`, `data/repo/`), constructor injection, `.yml`-only config on the default SERIALIZABLE isolation (only CRG carries READ COMMITTED, SCRUM-90).
 
 1. `initStep` (tasklet): for every eligible spine row, the creditor account create-if-absent + the immutable `man_init_verdict` + the guarded `spine_state` transition to `INITIALIZED`. Carries the shared `CrdbRetryExceptionHandler` (40001 re-runs the tasklet in a fresh tx).
 
@@ -44,11 +44,11 @@ Ephemeral Spring Boot 4.1.0 / Spring Batch 6 / Java 25 batch job cloned from the
 
 ## Database
 
-Liquibase owns the schema in the shared `dcre_man`, per-service history tables (`mit_databasechangelog` / `mit_databasechangeloglock`), calendar layout `2026/07/`, pure-XML typed changesets (MARK_RAN bootstrap guards):
+Liquibase owns the schema in the shared `dcre_man`, per-service history tables (`mit_databasechangelog` / `mit_databasechangeloglock`), calendar layout `2026/07/`, pure-XML typed changesets. The changelog is the SCRUM-107 **v1 baseline**: every DCRE database is dropped and recreated for the direct cut-over, so there is no historic state to converge and no retrofit apparatus (`validCheckSum`, defensive `IF NOT EXISTS`, create-then-drop pairs). The only `MARK_RAN` preconditions that remain are convergence guards on the shared reference core, and each names the writer it converges with:
 
-- `000-man-core-bootstrap.xml`: byte-equivalent VERBATIM copy of MRR's shared-core bootstrap (only the changeset ids are `mit-` prefixed, per the shared-core canon) so concurrent first runs of any M-service converge.
-- `001-man-init-verdict.xml`: `man_init_verdict` (`arrival_id`, `sequence`, `action`, UNIQUE (`arrival_id`, `sequence`)). MIT is the sole writer (R-04).
-- `002-batch-metadata.xml`: Liquibase-owned Spring Batch 6.0.4 DDL (`batch-metadata-mit.sql`), prefixed `MIT_BATCH_`, EXIT_MESSAGE widened to TEXT for CockroachDB.
+- `000-man-core-bootstrap.xml`: byte-equivalent VERBATIM copy of the shared-core bootstrap (only the changeset ids are `mit-` prefixed, per the shared-core canon) so concurrent first runs of any M-service converge. `account_type` / `account` / `mandate_reason_code` keep their `MARK_RAN` guards because the infra bootstrap (`dcre-infra scripts/seed-man-core.sql`) and the other nine M-services can each create them first.
+- `001-man-init-verdict.xml`: `man_init_verdict` (`arrival_id`, `sequence`, `action`, UNIQUE (`arrival_id`, `sequence`)). MIT is the sole writer (R-04) and the sole CREATOR, so this changeset carries NO `MARK_RAN` guard: on a v1 database the table cannot already exist.
+- `002-batch-metadata.xml`: Liquibase-owned Spring Batch 6.0.4 metadata as pure typed XML, one changeset per object, prefixed `MIT_BATCH_`, EXIT_MESSAGE widened to TEXT for CockroachDB. No guards: MIT is the only creator of its own `MIT_BATCH_` objects.
 
 MIT reads the MRR-owned spine (`mandate_request_entry`) and mints into the shared core (`account`); it never re-declares the spine in its own changelog (MRV reads the mrr-owned spine the same way).
 

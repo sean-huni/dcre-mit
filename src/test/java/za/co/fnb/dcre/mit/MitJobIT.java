@@ -122,7 +122,7 @@ class MitJobIT {
         final JobExecution run = run(arrival, null);
         assertEquals(BatchStatus.COMPLETED, run.getStatus());
         // Plain single-step job: the technical exit code is COMPLETED; the BUSINESS_ACCEPTED
-        // business verdict is carried by the outcome seam file asserted below (AIS pattern).
+        // business verdict is carried by the outcome seam file asserted below (PAI pattern).
         assertEquals("COMPLETED", run.getExitStatus().getExitCode());
 
         assertEquals("EXISTS", verdict(arrival, 1), "pre-existing creditor account -> EXISTS");

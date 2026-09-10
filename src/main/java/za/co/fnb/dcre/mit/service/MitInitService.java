@@ -16,7 +16,7 @@ import java.util.UUID;
  * every eligible spine row of the arrival (SCORE_PASSED CREATE, or VALIDATED
  * AMEND/CANCEL): the creditor account is minted create-if-absent (typed), an
  * immutable man_init_verdict is written (EXISTS when the account already
- * existed, CREATED when it was minted, mirroring the AIS immutable-verdict
+ * existed, CREATED when it was minted, mirroring the PAI immutable-verdict
  * pattern), and the spine advances to INITIALIZED. No projection row is written:
  * MSR is the sole writer of the mandate FSM (ruling note 2).
  *
