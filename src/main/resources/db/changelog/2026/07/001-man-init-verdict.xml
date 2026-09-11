@@ -38,6 +38,14 @@
          table and the spine_state -> INITIALIZED transition (ruling note 2). No
          projection writes: MSR is the sole writer of the mandate FSM. -->
     <changeSet id="mit-001-man-init-verdict" author="dcre">
+        <!-- A-82: this changeset gained a re-run guard AFTER it had already been applied,
+             which changes the enclosing checksum without changing one byte of the DDL
+             below. ANY rather than a pinned value: kind-dcre-dev stored 9:ebf6cc16c23ee62c1a0c4f3c0669343e,
+             and every environment that migrated at a different time holds a different
+             one, so a pin is correct on exactly one database and silently wrong on the
+             rest. The preConditions block is what keeps the re-run safe; the checksum
+             is not load-bearing here. Same call, same reason, as prr 002-batch-metadata. -->
+        <validCheckSum>ANY</validCheckSum>
         <preConditions onFail="MARK_RAN">
             <not><tableExists tableName="man_init_verdict"/></not>
         </preConditions>
