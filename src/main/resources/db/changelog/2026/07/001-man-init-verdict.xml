@@ -38,6 +38,10 @@
          table and the spine_state -> INITIALIZED transition (ruling note 2). No
          projection writes: MSR is the sole writer of the mandate FSM. -->
     <changeSet id="mit-001-man-init-verdict" author="dcre">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="man_init_verdict"/></not>
+        </preConditions>
+        
         <createTable tableName="man_init_verdict">
             <column name="id" type="UUID" defaultValueComputed="gen_random_uuid()">
                 <constraints primaryKey="true" nullable="false"/>
