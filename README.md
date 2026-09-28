@@ -55,3 +55,9 @@ MIT reads the MRR-owned spine (`mandate_request_entry`) and mints into the share
 ## Tests
 
 - `MitJobIT`: the full job over real CockroachDB (Testcontainers) for the EXISTS/CREATED paths (SCORE_PASSED CREATE + VALIDATED AMEND/CANCEL), the never-process guard (REJECTED / SCORE_DECLINED / SCORE_PENDING / RECEIVED / VALIDATED-CREATE untouched), and the resume/idempotency zero-duplicate audit.
+
+## Related repositories
+
+The complete, current list of live DCRE repositories (stage services, orchestrator, platform libraries, infra and tooling) lives in one place: the [DCRE design register README](https://github.com/sean-huni/dcre-design-register#repositories). Deprecated and archived repositories are deliberately absent from it. This README does not copy that list, so it cannot drift.
+
+- Design register: https://github.com/sean-huni/dcre-design-register (start at `docs/specs/DESIGN-REGISTER.md`; the diagrams in `docs/diagrams/` are the specification)
