@@ -1,6 +1,6 @@
 # dcre-mit
 
-> Part of the DCRE fleet. For the fleet map, the rulings and the diagrams that specify every stage, start at the [DCRE design register](https://github.com/sean-huni/dcre-design-register); the complete list of live repositories is its [Repositories](https://github.com/sean-huni/dcre-design-register#repositories) table.
+> Part of the DCRE fleet. For the fleet map, the rulings and the diagrams that specify every stage, start at the [DCRE design register](https://github.com/sean-huni/dcre-design-register); the complete list of live repositories is its [Repositories](https://github.com/sean-huni/dcre-design-register/blob/dev/README.md#repositories) table.
 
 Mandates Init Service: the fifth stage of the M10 mandates flow (SCRUM-77) that initializes the mandate spine written by MRR and advanced by MRV/MAS. For every eligible instruction row it mints the creditor account in the shared `dcre_man` account master if absent, records a durable per-record init verdict in `man_init_verdict`, and transitions the row's `spine_state` to `INITIALIZED` in `dcre_man`.
 
@@ -128,6 +128,6 @@ Image base: `eclipse-temurin:25-jre-alpine` (`Dockerfile` copies `build/libs/mit
 
 ## Related repositories
 
-The complete, current list of live DCRE repositories (stage services, orchestrator, platform libraries, infra and tooling) lives in one place: the [DCRE design register README](https://github.com/sean-huni/dcre-design-register#repositories). Deprecated and archived repositories are deliberately absent from it. This README does not copy that list, so it cannot drift.
+The complete, current list of live DCRE repositories (stage services, orchestrator, platform libraries, infra and tooling) lives in one place: the [DCRE design register README](https://github.com/sean-huni/dcre-design-register/blob/dev/README.md#repositories). Deprecated and archived repositories are deliberately absent from it. This README does not copy that list, so it cannot drift.
 
 - Design register: https://github.com/sean-huni/dcre-design-register (start at `docs/specs/DESIGN-REGISTER.md`; the diagrams in `docs/diagrams/` are the specification)
